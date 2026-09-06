@@ -1,0 +1,4 @@
+com\wandaprep\docservice\config\S3Config.class
+com\wandaprep\docservice\DocServiceApplication.class
+com\wandaprep\docservice\controller\HealthController.class
+com\wandaprep\docservice\controller\DocumentController.class
