@@ -16,27 +16,37 @@
 # ------------------------------------------------------------------------------------
 set -euo pipefail
 
-GIT_REPO_URL="REPLACE_ME_WITH_YOUR_GITHUB_REPO_URL"
-AWS_REGION_VALUE="REPLACE_ME_WITH_YOUR_REGION"
-S3_BUCKET_VALUE="REPLACE_ME_WITH_YOUR_BUCKET_NAME"
+GIT_REPO_URL="${git_repo_url}"
+AWS_REGION_VALUE="${aws_region}"
+S3_BUCKET_VALUE="${s3_bucket_name}"
 
 APP_DIR="/opt/docservice"
 BUILD_DIR="/opt/docservice-build"
 
+
 dnf install -y java-17-amazon-corretto git maven
 
-rm -rf "${BUILD_DIR}"
-git clone "${GIT_REPO_URL}" "${BUILD_DIR}"
-cd "${BUILD_DIR}"
+rm -rf "$${BUILD_DIR}"
+
+git clone "$${GIT_REPO_URL}" "$${BUILD_DIR}"
+
+cd "$${BUILD_DIR}"
 
 mvn -q -DskipTests clean package
 
-mkdir -p "${APP_DIR}"
-cp target/document-retrieval-service.jar "${APP_DIR}/document-retrieval-service.jar"
+mkdir -p "$${APP_DIR}"
 
-cp "${BUILD_DIR}/scripts/docservice.service" /etc/systemd/system/docservice.service
-sed -i "s/REPLACE_WITH_YOUR_REGION/${AWS_REGION_VALUE}/" /etc/systemd/system/docservice.service
-sed -i "s/REPLACE_WITH_YOUR_BUCKET_NAME/${S3_BUCKET_VALUE}/" /etc/systemd/system/docservice.service
+cp target/document-retrieval-service.jar \
+   "$${APP_DIR}/document-retrieval-service.jar"
+
+cp "$${BUILD_DIR}/scripts/docservice.service" \
+   /etc/systemd/system/docservice.service
+
+sed -i "s/REPLACE_WITH_YOUR_REGION/$${AWS_REGION_VALUE}/" \
+   /etc/systemd/system/docservice.service
+
+sed -i "s/REPLACE_WITH_YOUR_BUCKET_NAME/$${S3_BUCKET_VALUE}/" \
+   /etc/systemd/system/docservice.service
 
 systemctl daemon-reload
 systemctl enable docservice
