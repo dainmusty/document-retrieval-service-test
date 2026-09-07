@@ -8,19 +8,24 @@ variable "env" {
   description = "Prefix for environment"
 }
 
+variable "security_group_name" {
+  type        = string
+  description = "Name of the security group"
+}
+
 
 variable "description" {
-  type        = string
-  default     = "web security group"
+  type    = string
+  default = "web security group"
 }
 
 variable "web_ingress_rules" {
   type = list(object({
-    from_port                = number
-    to_port                  = number
-    protocol                 = string
-    description              = string
-    cidr_blocks              = optional(list(string))
+    from_port                 = number
+    to_port                   = number
+    protocol                  = string
+    description               = string
+    cidr_blocks               = optional(list(string))
     source_security_group_ids = optional(list(string))
   }))
   default = []
@@ -41,6 +46,6 @@ variable "web_sg_tags" {
   description = "Additional tags for the web security group"
   type        = map(string)
   default     = {}
-  
+
 }
 

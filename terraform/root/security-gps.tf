@@ -3,18 +3,23 @@
 
 # # WEB SG
 module "web_sg" {
-  source          = "../modules/security/web"
-  vpc_id          = module.vpc.vpc_id
-  env = "Dev"
+  source = "../modules/security/web"
+  vpc_id              = module.vpc.vpc_id
+  env                 = "blueeagle-prod"
+  security_group_name = "blueeagle-prod-app-sg"
 
   web_ingress_rules = [
     {
-      description              = "Allow traffic from ALB"
-      from_port                = 80
-      to_port                  = 80
-      protocol                 = "tcp"
+      from_port   = 22
+      to_port     = 22
+      protocol    = "tcp"
+      from_port                 = 8080
+      to_port                   = 8080
+      protocol                  = "tcp"
       source_security_group_ids = [module.alb_sg.alb_sg_id]
-    }
+      description               = "Allow traffic from ALB"
+    },
+
   ]
 
   web_egress_rules = [
@@ -38,9 +43,10 @@ module "web_sg" {
 
 # # ALB SG
 module "alb_sg" {
-  source          = "../modules/security/alb"
-  vpc_id          = module.vpc.vpc_id
-  env = "Dev"
+  source = "../modules/security/alb"
+  vpc_id              = module.vpc.vpc_id
+  env                 = "blueeagle-prod"
+  security_group_name = "blueeagle-prod-web-sg"
 
   alb_sg_ingress_rules = [
     {
@@ -70,10 +76,10 @@ module "alb_sg" {
   ]
 
   alb_sg_tags = {
-  "Name"        = "dev-alb-sg"
-  "Project"     = "Startup"
-  "Environment" = "dev"
-  "ManagedBy"   = "Terraform"
-}
+    "Name"        = "alb-sg"
+    "Project"     = "document-retrieval-service-test"
+    "Environment" = "dev"
+    "ManagedBy"   = "terraform"
+  }
 
 }

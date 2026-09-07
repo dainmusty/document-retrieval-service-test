@@ -51,7 +51,7 @@ variable "PublicRT_cidr" {
 variable "PrivateRT_cidr" {
   description = "CIDR block for the private route table"
   type        = string
-  
+
 }
 
 variable "eip_associate_with_private_ip" {

@@ -27,7 +27,7 @@ resource "aws_iam_role" "app" {
 
 
 resource "aws_iam_role_policy" "app_s3" {
-  name = "${var.policy_name}"
+  name = var.policy_name
   role = aws_iam_role.app.id
 
   policy = jsonencode({

@@ -1,5 +1,5 @@
 resource "aws_security_group" "alb_sg" {
-  name        = "${var.env}-alb-sg"
+  name        = var.security_group_name
   description = "Security group for ${var.env}-alb"
   vpc_id      = var.vpc_id
 
@@ -35,7 +35,7 @@ resource "aws_security_group" "alb_sg" {
 
   tags = merge(
     var.alb_sg_tags,
-    { Name = "${var.env}-alb-sg" }
+    { Name = var.security_group_name }
   )
 }
 

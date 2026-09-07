@@ -9,7 +9,7 @@ resource "aws_vpc" "vpc" {
     Name = "${var.ResourcePrefix}-vpc"
   }
 }
- 
+
 resource "aws_internet_gateway" "igw" {
   vpc_id = aws_vpc.vpc.id
   tags = {
@@ -28,7 +28,7 @@ resource "aws_subnet" "public_subnet" {
 
   tags = {
     Name = "${var.ResourcePrefix}-Public-Subnet-${each.key + 1}"
-    
+
   }
 }
 
@@ -43,7 +43,7 @@ resource "aws_subnet" "private_subnet" {
 
   tags = {
     Name = "${var.ResourcePrefix}-Private-Subnet-${each.key + 1}"
-    
+
   }
 }
 
@@ -58,9 +58,9 @@ resource "aws_route_table" "PublicRT" {
 }
 
 resource "aws_route_table_association" "PublicSubnetAssoc" {
-  for_each = aws_subnet.public_subnet
+  for_each       = aws_subnet.public_subnet
   subnet_id      = each.value.id
-  route_table_id = aws_route_table.PublicRT.id 
+  route_table_id = aws_route_table.PublicRT.id
 }
 
 # Route Table for Private Subnets and NAT Gateway to allow internet access
@@ -70,7 +70,7 @@ resource "aws_route_table_association" "PublicSubnetAssoc" {
 #     Name = "${var.ResourcePrefix}-eip"
 #   }
 # }
- 
+
 # resource "aws_nat_gateway" "ngw" {
 #   allocation_id = aws_eip.eip.id
 #   subnet_id     = aws_subnet.public_subnet[0].id // Corrected reference
@@ -78,7 +78,7 @@ resource "aws_route_table_association" "PublicSubnetAssoc" {
 #     Name = "${var.ResourcePrefix}-ngw"
 #   }
 # }
- 
+
 resource "aws_route_table" "PrivateRT" {
   vpc_id = aws_vpc.vpc.id
   # route {
@@ -89,10 +89,10 @@ resource "aws_route_table" "PrivateRT" {
     Name = "${var.ResourcePrefix}-Private-RT"
   }
 }
- 
+
 resource "aws_route_table_association" "PrivateSubnetAssoc" {
-  for_each = aws_subnet.private_subnet
+  for_each       = aws_subnet.private_subnet
   subnet_id      = each.value.id
-  route_table_id = aws_route_table.PrivateRT.id 
+  route_table_id = aws_route_table.PrivateRT.id
 }
 

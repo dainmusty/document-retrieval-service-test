@@ -3,6 +3,11 @@ variable "env" {
   description = "Prefix for resource naming"
 }
 
+variable "security_group_name" {
+  type        = string
+  description = "Name of the security group"
+}
+
 variable "vpc_id" {
   type        = string
   description = "VPC ID where security group will be created"
@@ -31,7 +36,7 @@ variable "alb_sg_egress_rules" {
     cidr_blocks     = optional(list(string))
     security_groups = optional(list(string))
   }))
-  
+
 }
 
 variable "alb_sg_tags" {
