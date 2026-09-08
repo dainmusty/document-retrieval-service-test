@@ -49,18 +49,41 @@ jobs:
           ls -lh target/
           test -f target/document-retrieval-service.jar
 
+      # ------------------------------------------------------------
+      # GitHub OIDC diagnostic
+      # ------------------------------------------------------------
+      # This confirms exactly which repository, branch/ref, and
+      # event GitHub is presenting during this workflow run.
+      # We intentionally do NOT print the OIDC token itself.
+      # ------------------------------------------------------------
+      - name: Debug GitHub OIDC context
+        run: |
+          echo "Repository: $GITHUB_REPOSITORY"
+          echo "Ref: $GITHUB_REF"
+          echo "Ref name: $GITHUB_REF_NAME"
+          echo "Event: $GITHUB_EVENT_NAME"
+
+      # ------------------------------------------------------------
+      # Authenticate GitHub Actions to AWS using OIDC
+      # ------------------------------------------------------------
       - name: Configure AWS credentials
         uses: aws-actions/configure-aws-credentials@v4
         with:
           role-to-assume: arn:aws:iam::651706774390:role/gitactions-tf-role
           aws-region: ${{ env.AWS_REGION }}
 
+      # ------------------------------------------------------------
+      # Publish immutable application artifact
+      # ------------------------------------------------------------
       - name: Publish artifact to S3
         run: |
           aws s3 cp \
             target/${{ env.ARTIFACT_NAME }} \
             s3://${{ env.ARTIFACT_BUCKET }}/document-retrieval-service/${{ github.sha }}/${{ env.ARTIFACT_NAME }}
 
+      # ------------------------------------------------------------
+      # Verify artifact publication
+      # ------------------------------------------------------------
       - name: Verify published artifact
         run: |
           aws s3 ls \
