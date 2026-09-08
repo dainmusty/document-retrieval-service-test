@@ -7,7 +7,7 @@ module "gitactions_tf_role" {
   create_oidc_provider = false
 
   github_oidc_subjects = [
-    "repo:dainmusty/document-retrieval-service-test.git:*"
+    "repo:dainmusty/document-retrieval-service-test:*"
   ]
 
   inline_policy_statements = [
@@ -28,8 +28,8 @@ module "gitactions_tf_role" {
       ]
 
       Resource = [
-        "arn:aws:s3:::blueeagle-prod-app-doc-artifacts",
-        "arn:aws:s3:::blueeagle-prod-app-doc-artifacts/*"
+        "arn:aws:s3:::blueeagle-prod-app-doc-artifacts/document-retrieval-service/*"
+       
       ]
     }
 
