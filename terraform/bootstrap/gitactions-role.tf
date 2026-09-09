@@ -7,7 +7,7 @@ module "gitactions_tf_role" {
   create_oidc_provider = false
 
   github_oidc_subjects = [
-    "repo:dainmusty@179479146/document-retrieval-service-test@1358631211:*"
+    "repo:dainmusty@179479146/document-retrieval-service-test@1358631211:*"   # remember to update this to your repo with the owner and repo ids and branch name
   ]
 
   inline_policy_statements = [
@@ -18,12 +18,12 @@ module "gitactions_tf_role" {
     # S3
     #########################################
     {
-      Sid    = "AllowS3PutObject"
+      Sid    = "AllowedS3Actions"
       Effect = "Allow"
 
       Action = [
 
-        "s3:PutObject"
+        "s3:PutObject", "s3:ListBucket"
 
       ]
 
