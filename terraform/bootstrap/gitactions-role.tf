@@ -7,7 +7,7 @@ module "gitactions_tf_role" {
   create_oidc_provider = false
 
   github_oidc_subjects = [
-    "repo:dainmusty/document-retrieval-service-test:*"
+    "repo:dainmusty@179479146/document-retrieval-service-test@1358631211:*"
   ]
 
   inline_policy_statements = [
