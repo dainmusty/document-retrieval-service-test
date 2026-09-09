@@ -23,7 +23,7 @@ module "gitactions_tf_role" {
 
       Action = [
 
-        "s3:PutObject", "s3:ListObjects"
+        "s3:PutObject", "s3:ListObject", "s3:ListBucket"
 
       ]
 
