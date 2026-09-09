@@ -28,7 +28,11 @@ module "gitactions_tf_role" {
       ]
 
       Resource = [
-        "arn:aws:s3:::blueeagle-prod-app-doc-artifacts/document-retrieval-service/*"
+        # Bucket itself for listing
+        "arn:aws:s3:::blueeagle-prod-app-doc-artifacts",
+
+        # All objects in the bucket
+        "arn:aws:s3:::blueeagle-prod-app-doc-artifacts/*"
        
       ]
     }
