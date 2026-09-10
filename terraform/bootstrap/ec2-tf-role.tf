@@ -18,7 +18,16 @@ module "ec2_tf_role" {
         "arn:aws:s3:::blueeagle-prod-app-doc-artifacts/document-retrieval-service/*"
       ]
     },
-
+    {
+      Sid    = "AllowListApplicationBucket"
+      Effect = "Allow"
+      Action = [
+        "s3:ListBucket"
+      ]
+      Resource = [
+        "arn:aws:s3:::blueeagle-prod-app-doc-artifacts"
+      ]
+    },
     {
       Sid    = "AllowReadArtifactParameter"
       Effect = "Allow"
