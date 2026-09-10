@@ -3,7 +3,7 @@ module "vpc" {
   source = "../modules/vpc"
 
   vpc_cidr                      = "10.1.0.0/16"
-  ResourcePrefix                = "Dev"
+  ResourcePrefix                = "blueeagle-prod-app"
   enable_dns_hostnames          = true
   enable_dns_support            = true
   instance_tenancy              = "default"
