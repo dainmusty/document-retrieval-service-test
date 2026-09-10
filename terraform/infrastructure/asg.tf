@@ -1,7 +1,7 @@
 module "asg" {
   source = "../modules/asg"
 
-  subnet_ids                = module.vpc.vpc_private_subnets
+  subnet_ids                = module.vpc.vpc_public_subnets
   web_sg_id                 = module.web_sg.web_sg_id
   ec2_role_name             = "ec2-tf-role"  #update with existing IAM role name
   ami_id                    = "ami-08b5b3a93ed654d19"

@@ -183,7 +183,9 @@ module "gitactions_tf_role" {
         "elasticloadbalancing:RemoveTags",
         "elasticloadbalancing:DescribeTags",
         "elasticloadbalancing:DescribeLoadBalancerAttributes",
-        "elasticloadbalancing:DescribeTargetGroupAttributes"
+        "elasticloadbalancing:DescribeTargetGroupAttributes",
+        "elasticloadbalancing:DescribeListenerAttributes",
+        "elasticloadbalancing:DescribeTargetHealth"
       ]
       Resource = [
         "*"
@@ -318,3 +320,4 @@ module "gitactions_tf_role" {
     Owner   = "wandaprep"
   }
 }
+
