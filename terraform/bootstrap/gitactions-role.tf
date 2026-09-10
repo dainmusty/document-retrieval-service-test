@@ -181,7 +181,8 @@ module "gitactions_tf_role" {
         "elasticloadbalancing:DescribeRules",
         "elasticloadbalancing:AddTags",
         "elasticloadbalancing:RemoveTags",
-        "elasticloadbalancing:DescribeTags"
+        "elasticloadbalancing:DescribeTags",
+        "elasticloadbalancing:DescribeLoadBalancerAttributes"
       ]
       Resource = [
         "*"
