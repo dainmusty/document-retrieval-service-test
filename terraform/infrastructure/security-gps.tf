@@ -13,12 +13,23 @@ module "web_sg" {
       from_port   = 22
       to_port     = 22
       protocol    = "tcp"
+      cidr_blocks = ["0.0.0.0/0"]
+      description = "Allow SSH traffic from the internet" # Temporary rule for testing purposes. In production, this should be restricted to a bastion host security group.
+    },
+    {
+      from_port   = 443
+      to_port     = 443
+      protocol    = "tcp"
+      cidr_blocks = ["0.0.0.0/0"]
+      description = "Allow HTTPS traffic from the internet" # Temporary rule for testing purposes(ssm access). In production, this should be restricted to the ALB security group.
+    },
+    {
       from_port                 = 8080
       to_port                   = 8080
       protocol                  = "tcp"
       source_security_group_ids = [module.alb_sg.alb_sg_id]
       description               = "Allow traffic from ALB"
-    },
+    }
 
   ]
 
@@ -34,7 +45,7 @@ module "web_sg" {
 
   web_sg_tags = {
     Name        = "web-sg"
-    Environment = "Dev"
+    Environment = "prod"
   }
 
 }
@@ -78,8 +89,11 @@ module "alb_sg" {
   alb_sg_tags = {
     "Name"        = "alb-sg"
     "Project"     = "document-retrieval-service-test"
-    "Environment" = "dev"
+    "Environment" = "prod"
     "ManagedBy"   = "terraform"
   }
 
 }
+
+
+# Add a bastion host sg later if needed for debugging purposes. For now, we will not add a bastion host sg.
