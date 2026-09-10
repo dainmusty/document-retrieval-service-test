@@ -1,3 +1,19 @@
+data "aws_iam_role" "ec2_role" {
+  name = var.ec2_role_name
+}
+
+resource "aws_iam_instance_profile" "ec2_instance_profile" {
+  name = "${var.ec2_role_name}-instance-profile"
+  role = data.aws_iam_role.ec2_role.name
+
+  tags = {
+    Name      = "${var.ec2_role_name}-instance-profile"
+    Project   = "BlueEagle"
+    ManagedBy = "Terraform"
+    Owner     = "Platform"
+  }
+}
+
 resource "aws_launch_template" "web_lt" {
   name_prefix            = var.launch_template_name
   image_id               = var.ami_id
@@ -5,7 +21,9 @@ resource "aws_launch_template" "web_lt" {
   key_name               = var.key_name
   vpc_security_group_ids = [var.web_sg_id]
 
-  iam_instance_profile { name = var.iam_instance_profile_name }
+  iam_instance_profile {
+  name = aws_iam_instance_profile.ec2_instance_profile.name
+}
   user_data = base64encode(var.user_data)
 
   monitoring { enabled = true }
@@ -61,3 +79,4 @@ resource "aws_autoscaling_group" "web_asg" {
 
   lifecycle { create_before_destroy = true }
 }
+

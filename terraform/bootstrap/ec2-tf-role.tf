@@ -1,0 +1,40 @@
+module "ec2_tf_role" {
+  source = "../modules/iam-role"
+
+  role_name = "ec2-tf-role"
+
+  trust_type = "ec2"
+
+  inline_policy_statements = [
+    {
+      Sid    = "AllowReadApplicationArtifact"
+      Effect = "Allow"
+
+      Action = [
+        "s3:GetObject"
+      ]
+
+      Resource = [
+        "arn:aws:s3:::blueeagle-prod-app-doc-artifacts/document-retrieval-service/*"
+      ]
+    },
+
+    {
+      Sid    = "AllowReadArtifactParameter"
+      Effect = "Allow"
+
+      Action = [
+        "ssm:GetParameter"
+      ]
+
+      Resource = [
+        "arn:aws:ssm:us-east-1:651706774390:parameter/blueeagle/prod/document-retrieval-service/artifact-key"
+      ]
+    }
+  ]
+
+  tags = {
+    Project = "document-retrieval-service-app"
+    Owner   = "wandaprep"
+  }
+}

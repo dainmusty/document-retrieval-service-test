@@ -1,9 +1,12 @@
 variable "subnet_ids" {
   type = list(string)
 }
-variable "iam_instance_profile_name" {
-  type = string
+
+variable "ec2_role_name" {
+  description = "Name of the existing IAM role to attach to EC2 instances"
+  type        = string
 }
+
 variable "web_sg_id" {
   type = string
 }

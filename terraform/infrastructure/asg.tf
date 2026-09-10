@@ -3,7 +3,7 @@ module "asg" {
 
   subnet_ids                = module.vpc.vpc_private_subnets
   web_sg_id                 = module.web_sg.web_sg_id
-  iam_instance_profile_name = module.iam.instance_profile_name
+  ec2_role_name             = "ec2-tf-role"  #update with existing IAM role name
   ami_id                    = "ami-08b5b3a93ed654d19"
   instance_type             = "t2.micro"
   key_name                  = "us-east-1-musty"
@@ -12,7 +12,7 @@ module "asg" {
     {
       git_repo_url   = "https://github.com/dainmusty/document-retrieval-service-test.git"
       aws_region     = "us-east-1"
-      s3_bucket_name = "mustydain"
+      s3_bucket_name = "blueeagle-prod-app-doc-artifacts"
     }
   )
 

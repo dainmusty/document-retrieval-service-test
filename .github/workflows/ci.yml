@@ -13,6 +13,8 @@ permissions:
   id-token: write
 
 env:
+   # Terraform
+  TF_WORKING_DIRECTORY: terraform/infrastructure
   AWS_REGION: us-east-1
   ARTIFACT_BUCKET: blueeagle-prod-app-doc-artifacts
   ARTIFACT_NAME: document-retrieval-service.jar
@@ -49,19 +51,6 @@ jobs:
           ls -lh target/
           test -f target/document-retrieval-service.jar
 
-      # ------------------------------------------------------------
-      # GitHub OIDC diagnostic
-      # ------------------------------------------------------------
-      # This confirms exactly which repository, branch/ref, and
-      # event GitHub is presenting during this workflow run.
-      # We intentionally do NOT print the OIDC token itself.
-      # ------------------------------------------------------------
-      - name: Debug GitHub OIDC context
-        run: |
-          echo "Repository: $GITHUB_REPOSITORY"
-          echo "Ref: $GITHUB_REF"
-          echo "Ref name: $GITHUB_REF_NAME"
-          echo "Event: $GITHUB_EVENT_NAME"
 
       # ------------------------------------------------------------
       # Authenticate GitHub Actions to AWS using OIDC
@@ -80,7 +69,7 @@ jobs:
           aws s3 cp \
             target/${{ env.ARTIFACT_NAME }} \
             s3://${{ env.ARTIFACT_BUCKET }}/document-retrieval-service/${{ github.sha }}/${{ env.ARTIFACT_NAME }}
-
+ 
       # ------------------------------------------------------------
       # Verify artifact publication
       # ------------------------------------------------------------
@@ -88,3 +77,47 @@ jobs:
         run: |
           aws s3 ls \
             s3://${{ env.ARTIFACT_BUCKET }}/document-retrieval-service/${{ github.sha }}/
+
+
+        # ------------------------------------------------------------
+      # Deploy infrastructure
+      # ------------------------------------------------------------
+      - name: Terraform Init
+        working-directory: ${{ env.TF_WORKING_DIRECTORY }}
+        run: |
+          terraform init
+
+      - name: Terraform Validate
+        working-directory: ${{ env.TF_WORKING_DIRECTORY }}
+        run: |
+          terraform validate
+
+      - name: Terraform Plan
+        working-directory: ${{ env.TF_WORKING_DIRECTORY }}
+        run: |
+          terraform plan
+
+      - name: Terraform Apply
+        if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+        working-directory: ${{ env.TF_WORKING_DIRECTORY }}
+        run: |
+          terraform apply -auto-approve      
+
+
+       # ------------------------------------------------------------
+      # Point deployment to the immutable artifact
+      # ------------------------------------------------------------
+      - name: Update deployed artifact version
+        if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+        run: |
+          ARTIFACT_KEY="document-retrieval-service/${GITHUB_SHA}/${ARTIFACT_NAME}"
+
+          echo "Deploying artifact:"
+          echo "${ARTIFACT_KEY}"
+
+          aws ssm put-parameter \
+            --name "/blueeagle/prod/document-retrieval-service/artifact-key" \
+            --value "${ARTIFACT_KEY}" \
+            --type "String" \
+            --overwrite \
+            --region "${AWS_REGION}"    
