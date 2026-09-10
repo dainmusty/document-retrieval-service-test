@@ -109,7 +109,7 @@ jobs:
         if: github.event_name == 'push' && github.ref == 'refs/heads/main'
         working-directory: ${{ env.TF_WORKING_DIRECTORY }}
         run: |
-          terraform apply -auto-approve
+          terraform destroy -auto-approve
 
       # ------------------------------------------------------------
       # Point deployment to the immutable artifact
