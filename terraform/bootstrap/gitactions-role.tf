@@ -98,7 +98,8 @@ module "gitactions_tf_role" {
         "ec2:RevokeSecurityGroupEgress",
         "ec2:CreateTags",
         "ec2:DeleteTags",
-        "ec2:DescribeTags"
+        "ec2:DescribeTags",
+        "ec2:DescribeVpcAttribute"
       ]
       Resource = [
         "*"
