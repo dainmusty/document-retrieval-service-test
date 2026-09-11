@@ -59,8 +59,10 @@ resource "aws_autoscaling_group" "web_asg" {
   min_size            = var.min_size
   desired_capacity    = var.desired_capacity
   vpc_zone_identifier = var.subnet_ids
-  health_check_type   = "EC2"
+  health_check_type   = "EC2" # you can also use "ELB" if you have an ELB health check configured
+  health_check_grace_period = 180
   force_delete        = true
+  target_group_arns         = [var.target_group_arn]
 
   launch_template {
     id      = aws_launch_template.web_lt.id
@@ -69,7 +71,16 @@ resource "aws_autoscaling_group" "web_asg" {
 
   wait_for_capacity_timeout = "10m"
 
-  target_group_arns         = [var.target_group_arn]
+  instance_refresh {
+    strategy = "Rolling"
+
+    preferences {
+      min_healthy_percentage = 50
+      instance_warmup        = 60
+    }
+
+    
+  }
 
   tag {
     key                 = "Name"
