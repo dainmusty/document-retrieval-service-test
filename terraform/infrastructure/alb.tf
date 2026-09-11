@@ -4,7 +4,7 @@ module "alb" {
   vpc_id            = module.vpc.vpc_id
   subnet_ids        = module.vpc.vpc_private_subnets
   alb_sg_ids        = [module.alb_sg.alb_sg_id]
-  internal          = true
+  internal          = false
   alb_name          = "blueeagle-prod-app-alb"
   target_group_name = "blueeagle-prod-app-tg"
   target_port       = 8080
