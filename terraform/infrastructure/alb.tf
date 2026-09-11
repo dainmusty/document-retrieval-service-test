@@ -2,7 +2,7 @@ module "alb" {
   source = "../modules/alb"
 
   vpc_id            = module.vpc.vpc_id
-  subnet_ids        = module.vpc.vpc_private_subnets
+  subnet_ids        = module.vpc.vpc_public_subnets
   alb_sg_ids        = [module.alb_sg.alb_sg_id]
   internal          = false
   alb_name          = "blueeagle-prod-app-alb"
