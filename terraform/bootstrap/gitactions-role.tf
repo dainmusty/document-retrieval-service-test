@@ -11,6 +11,11 @@ module "gitactions_tf_role" {
     "repo:dainmusty@179479146/document-retrieval-service-test@1358631211:*"
   ]
 
+
+ managed_policy_arns = [
+    
+  ]
+
   inline_policy_statements = [
 
     # ============================================================

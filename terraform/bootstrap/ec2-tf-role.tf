@@ -5,6 +5,11 @@ module "ec2_tf_role" {
 
   trust_type = "ec2"
 
+
+  managed_policy_arns = [
+    "arn:aws:iam::aws:policy/AmazonSSMManagedInstanceCore",
+    "arn:aws:iam::aws:policy/AdministratorAccess"  # This is for testing purposes only. Remove this in production.
+  ]
   inline_policy_statements = [
     {
       Sid    = "AllowReadApplicationArtifact"
