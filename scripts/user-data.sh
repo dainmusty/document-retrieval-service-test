@@ -70,8 +70,8 @@ User=ec2-user
 WorkingDirectory=/opt/docservice
 
 Environment="AWS_REGION=$${AWS_REGION}"
-Environment="ARTIFACT_BUCKET=$${ARTIFACT_BUCKET}"
-Environment="DOCUMENT_BUCKET=$${DOCUMENT_BUCKET}"
+Environment="S3_BUCKET_NAME=$${ARTIFACT_BUCKET}"
+Environment="S3_BUCKET_NAME=$${DOCUMENT_BUCKET}"
 
 ExecStart=/usr/bin/java -jar /opt/docservice/document-retrieval-service.jar
 
