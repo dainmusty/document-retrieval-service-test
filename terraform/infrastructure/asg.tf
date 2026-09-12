@@ -12,7 +12,8 @@ module "asg" {
     {
       git_repo_url   = "https://github.com/dainmusty/document-retrieval-service-test.git"
       aws_region     = "us-east-1"
-      s3_bucket_name = "blueeagle-prod-app-doc-artifacts"
+      artifact_bucket_name = "blueeagle-prod-app-doc-artifacts"
+      document_bucket_name = "blueeagle-prod-app-documents"
     }
   )
 

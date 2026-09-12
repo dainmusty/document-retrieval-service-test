@@ -9,11 +9,13 @@ APP_DIR="/opt/docservice"
 
 # Terraform template variables
 AWS_REGION="${aws_region}"
-ARTIFACT_BUCKET="${s3_bucket_name}"
+ARTIFACT_BUCKET="${artifact_bucket_name}"
+DOCUMENT_BUCKET="${document_bucket_name}"
 ARTIFACT_PARAMETER="/blueeagle/prod/document-retrieval-service/artifact-key"
 
 echo "AWS Region: $${AWS_REGION}"
 echo "Artifact Bucket: $${ARTIFACT_BUCKET}"
+echo "Document Bucket: $${DOCUMENT_BUCKET}"
 echo "Artifact Parameter: $${ARTIFACT_PARAMETER}"
 
 echo "Installing required packages..."
@@ -68,7 +70,8 @@ User=ec2-user
 WorkingDirectory=/opt/docservice
 
 Environment="AWS_REGION=$${AWS_REGION}"
-Environment="S3_BUCKET_NAME=$${ARTIFACT_BUCKET}"
+Environment="ARTIFACT_BUCKET=$${ARTIFACT_BUCKET}"
+Environment="DOCUMENT_BUCKET=$${DOCUMENT_BUCKET}"
 
 ExecStart=/usr/bin/java -jar /opt/docservice/document-retrieval-service.jar
 
