@@ -228,10 +228,12 @@ jobs:
             --query 'LoadBalancers[0].DNSName' \
             --output text)
 
+          echo "ALB DNS: ${ALB_DNS}"
+
           echo "Testing document endpoint through ALB..."
 
           RESPONSE=$(curl --fail --silent --show-error \
-            "http://${ALB_DNS}/documents/test-document.txt")
+          "http://${ALB_DNS}/documents/test-document.txt")
 
           echo "Document response:"
           echo "${RESPONSE}"
